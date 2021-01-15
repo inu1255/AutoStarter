@@ -38,6 +38,7 @@ class AutoStartPermissionHelper private constructor() {
     private val BRAND_HONOR = "honor"
     private val PACKAGE_HONOR_MAIN = "com.huawei.systemmanager"
     private val PACKAGE_HONOR_COMPONENT = "com.huawei.systemmanager.optimize.process.ProtectActivity"
+    private val PACKAGE_HONOR_COMPONENT_FALLBACK = "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"
 
     /***
      * Huawei
@@ -193,7 +194,12 @@ class AutoStartPermissionHelper private constructor() {
                 startIntent(context, PACKAGE_HONOR_MAIN, PACKAGE_HONOR_COMPONENT)
             } catch (e: Exception) {
                 e.printStackTrace()
-                return false
+                try {
+                    startIntent(context, PACKAGE_HONOR_MAIN, PACKAGE_HONOR_COMPONENT_FALLBACK)
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                    return false
+                }
             }
         } else {
             return false
